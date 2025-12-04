@@ -1,7 +1,7 @@
 variable "location" {
   type        = string
   description = "Azure region for the deployment"
-  default     = "eastus"
+  default     = "westus2"
 }
 
 variable "project_owner" {
@@ -15,3 +15,16 @@ variable "environment" {
   description = "Environment tag"
   default     = "PoC"
 }
+
+variable "vm_admin_username" {
+  type        = string
+  description = "Admin username for the VM"
+  default     = "vmadmin"
+}
+
+variable "vm_admin_password" {
+  type        = string
+  description = "Admin password for the VM"
+  sensitive   = true
+}
+
