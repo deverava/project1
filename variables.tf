@@ -1,4 +1,5 @@
 # Test change to trigger CI
+# trigger pipeline test
 variable "location" {
   type        = string
   description = "Azure region for the deployment"
