@@ -3,7 +3,6 @@ name: Terraform CI
 permissions:
   contents: read
 
-
 on:
   push:
     branches:
@@ -21,35 +20,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repo code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Step 2: Install Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
 
-      # Step 3: Login to Azure using the Service Principal
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-
-      # Step 4: Check Terraform formatting
       - name: Terraform fmt
         run: terraform fmt -check -recursive
 
-      # Step 5: Terraform init
       - name: Terraform init
         run: terraform init
 
-      # Step 6: Terraform validate
       - name: Terraform validate
         run: terraform validate
 
-      # Step 7: Terraform plan (no apply yet, safe)
       - name: Terraform plan
         run: terraform plan
