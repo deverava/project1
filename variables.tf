@@ -1,3 +1,4 @@
+# Test change to trigger CI
 variable "location" {
   type        = string
   description = "Azure region for the deployment"
