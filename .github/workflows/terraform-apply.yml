@@ -1,30 +1,19 @@
-name: Terraform CI
+name: Terraform Apply
 
 permissions:
-  contents: read
   id-token: write
+  contents: read
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**/*.tf'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '**/*.tf'
+  workflow_dispatch:
 
 jobs:
-  terraform:
+  apply:
     runs-on: ubuntu-latest
 
     env:
-      # VM password for variable vm_admin_password
       TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
 
-      # Tell Terraform/AzureRM backend to use the Service Principal (not Azure CLI)
       ARM_CLIENT_ID:        ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
       ARM_CLIENT_SECRET:    ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
       ARM_SUBSCRIPTION_ID:  ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
@@ -44,14 +33,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Terraform fmt
-        run: terraform fmt -check -recursive
-
       - name: Terraform init
         run: terraform init
 
-      - name: Terraform validate
-        run: terraform validate
-
       - name: Terraform plan
         run: terraform plan
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
